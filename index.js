@@ -9,7 +9,7 @@ app.set('view engine','ejs')// The view engine is responsible for rendering dyna
 // engine, we are telling Express which templating engine to use for rendering our views.
 
 //Set Request Size Limit
-// app.use(bodyParser({limit: '50mb'}));
+ app.use(bodyParser({limit: '50mb'}));
 
 app.use(expressLayouts); //render layout.ejs 
 app.use(express.json()) // parses json 
