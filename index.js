@@ -70,14 +70,22 @@ app.post("/resume-maker", (req, res, next) => {
     //HTML to pdf converter
     pdf
       .create(dynamicResume(req.body, themeOptions), options)
-      .toFile(
-        __dirname + "/docs/" + shortName + "-resume.pdf",
-        (error, response) => {
-          if (error) throw Error("Pdf is not created");
-          else res.sendFile(response.filename);
-          // console.log(response.filename);
+      .toStream((err, stream) => {
+        if (err) {
+          console.error(err);
+          return res.status(500).send("Something went wrong");
         }
-      );
+
+        // Set response headers for download
+        res.setHeader("Content-Type", "application/pdf");
+        res.setHeader(
+          "Content-Disposition",
+          `attachment; filename=${shortName + "-resume.pdf"}`
+        );
+
+        // Pipe the PDF stream to the response
+        stream.pipe(res);
+      });
   } else if (req.body.theme == "green") {
     themeOptions = {
       leftTextColor: "rgb(183, 217, 255)",
@@ -88,26 +96,42 @@ app.post("/resume-maker", (req, res, next) => {
     //HTML to pdf converter
     pdf
       .create(dynamicResume(req.body, themeOptions), options)
-      .toFile(
-        __dirname + "/docs/" + shortName + "-resume.pdf",
-        (error, response) => {
-          if (error) throw Error("Pdf is not created");
-          // console.log(response.filename);
-          res.sendFile(response.filename);
+      .toStream((err, stream) => {
+        if (err) {
+          console.error(err);
+          return res.status(500).send("Something went wrong");
         }
-      );
+
+        // Set response headers for download
+        res.setHeader("Content-Type", "application/pdf");
+        res.setHeader(
+          "Content-Disposition",
+          `attachment; filename=${shortName + "-resume.pdf"}`
+        );
+
+        // Pipe the PDF stream to the response
+        stream.pipe(res);
+      });
   } else {
     //HTML to pdf converter
     pdf
       .create(dynamicResume(req.body, themeOptions), options)
-      .toFile(
-        __dirname + "/docs/" + shortName + "-resume.pdf",
-        (error, response) => {
-          if (error) throw Error("Pdf is not created");
-          // console.log(response.filename);
-          res.sendFile(response.filename);
+      .toStream((err, stream) => {
+        if (err) {
+          console.error(err);
+          return res.status(500).send("Something went wrong");
         }
-      );
+
+        // Set response headers for download
+        res.setHeader("Content-Type", "application/pdf");
+        res.setHeader(
+          "Content-Disposition",
+          `attachment; filename=${shortName + "-resume.pdf"}`
+        );
+
+        // Pipe the PDF stream to the response
+        stream.pipe(res);
+      });
   }
 });
 const port = process.env.PORT || 4000;
